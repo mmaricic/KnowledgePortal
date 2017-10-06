@@ -1,4 +1,5 @@
 IEP-portal\Scripts\* linguist-vendored
+IEP-portal\Content\* linguist-vendored
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
