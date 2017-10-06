@@ -1,0 +1,119 @@
+﻿@model IEP_portal.Models.CreateQuestionViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-heading" align="center">Create new Question</div>
+
+
+@using (Html.BeginForm("Create", "Questions", FormMethod.Post, new { id = "createForm"}))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+       
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger", @align = "center" })
+        <div class="form-group" style="margin-right:100px">
+            @Html.LabelFor(model => model.question.Title, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.question.Title, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.question.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-right:100px">
+            @Html.LabelFor(model => model.question.UploadImage, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.question.UploadImage, new { type = "file", @class="form-control" })
+                @Html.ValidationMessageFor(model => model.question.UploadImage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-right:100px">
+            @Html.LabelFor(model => model.question.Text, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.question.Text, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.question.Text, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-right:100px">
+            @Html.LabelFor(model => model.question.IsLocked, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                <div class="checkbox">
+                    @Html.CheckBoxFor(model => model.question.IsLocked)
+                    @Html.ValidationMessageFor(model => model.question.IsLocked, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        
+            @Html.Partial("_Answer")
+
+        <div class="form-group">
+            <div class="col-md-6" align="right">
+                <input type="button" value="Create" id="btnSave" class="btn new-button" />
+            </div>
+            <div class="col-md-6" align="left">
+                <button onclick="location.href='/questions'" type="button" class="btn new-button">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+    $(document).ready(function () {
+        $("#btnSave").on('click', function () {
+            let url = '@Url.Action("Create", "Questions")';
+            let datas = [];
+            let image = $('#question_UploadImage');
+            let test = image.val();
+            let fd = new FormData(/*$("#createForm").get(0)*/);
+            fd.append('question.Title', $("input[name='question.Title'").val());
+            fd.append('question.UploadImage', image[0].files[0]);
+            fd.append('question.Text', $("input[name='question.Text'").val());
+            fd.append('question.IsLocked', $("input[name='question.IsLocked'").attr("checked"));
+            
+            for (var i = 0 ; i < @ViewBag.K; i++) {
+          
+                fd.append('answers['+i+'].Text', $('#Answer'+i).val());
+                fd.append('answers['+i+'].Mark', String.fromCharCode(65+i));
+                fd.append('answers['+i+'].Number', i+1);
+                fd.append('answers['+i+'].IsCorrect', false);
+            }; 
+            fd.append('correct', $('input[name=Correct]:checked').val());
+            $.ajax({
+                url: url,
+                headers: {__RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()},
+            type:"POST",
+            data: fd,
+            processData: false,
+            contentType: false,
+            }).success(function(response){
+                if(response.status){
+                    window.location = response.url;
+                }
+                else {
+                    let errors = response.errors;
+                    $(".invalidError").remove();
+                    for(let i = 0; i < errors.length; i++ )
+                        $('input[name="' + errors[i].Name + '"]').addClass('error').after('<div class="text-danger invalidError">' + errors[i].error + '</div>');
+               
+                }
+            }).error(function(data){
+                alert(data);
+                });
+            });
+
+    });
+</script>
+}

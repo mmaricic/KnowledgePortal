@@ -1,0 +1,61 @@
+﻿@model IEP_portal.Models.Channel
+
+@{
+    ViewBag.Title = "Create Channel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div  class="page-heading" align="center">Create new channel</div>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+       
+        <hr />
+        <br />
+        @Html.HiddenFor(model => model.TeacherId)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger", @align = "center" })
+        <div class="form-group"  style="margin-left:70px">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-left:70px">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-left:70px">
+            @Html.LabelFor(model => model.timeLimit, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.timeLimit, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.timeLimit, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-6" align="right">
+                <input type="submit"  value="Create" class="btn new-button" />
+            </div>
+            <div class="com-md-6" align="left">
+                <button onclick="location.href='/channels'" type="button" class="btn new-button">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<IEP_portal.Models.Distributed_Question>
+
+@{
+    ViewBag.Title = "Distributed Questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div  class="page-heading" align="center">Distributed Questions</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.Label("Channel")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Picture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Channel.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @{
+                if (item.Picture != null) {
+                    Html.Label("Exists");
+                }
+                else {
+                    Html.Label("Doesn't Exists");
+                      }
+            }
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedAt)
+        </td>
+        <td>
+            @Html.ActionLink("Details and Student Answers", "QuestionAnswers", new { id=item.Id }) |
+            
+            @Html.ActionLink("Back to channels", "Index")
+           
+        </td>
+    </tr>
+}
+
+</table>

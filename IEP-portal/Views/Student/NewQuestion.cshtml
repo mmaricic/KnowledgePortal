@@ -1,0 +1,38 @@
+﻿@model IEP_portal.Models.Distributed_Question
+
+
+<a class="active-card col-md-4" href="@Url.Action("AnswerQuestion", "Student" , new { id=Model.Id })">
+
+    <div class="card-text-title"> @Html.DisplayFor(model => model.Title)</div>
+
+
+
+    @if (Model.Text != null)
+    {
+        <div class="card-text-heading">
+            @Html.DisplayFor(model => model.Text)
+        </div>
+    }
+    else if (Model.Picture != null)
+    {
+        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Picture)" />
+    }
+  
+    @foreach (var answer in Model.Distributed_Answer)
+    {
+        <div class="row text-center card-text">
+            <div class="col-sm-3">
+                @Html.DisplayFor(answerItem => answer.Mark):
+            </div>
+            <div class="col-sm-9" align="left">
+                @Html.DisplayFor(answerItem => answer.Text):
+            </div>
+        </div>
+    }
+
+    <br />
+
+    <div class="card-text-heading" style="font-style:italic; font-size:16px">
+        Distribution channel: @Model.Channel.Title
+    </div>
+</a>

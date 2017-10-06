@@ -1,0 +1,111 @@
+﻿@model IEP_portal.Models.AspNetUsers
+@using Microsoft.AspNet.Identity;
+
+<link href="~/Content/Custom.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-heading" align="center">My profile</div>
+
+<div>
+   
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Surname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Surname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tokens)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tokens)
+        </dd>
+
+        <dt>
+           Role
+        </dt>
+        @{
+            string name = null;
+            if (Model.AspNetRoles.Count != 0)
+            {
+                name = Model.AspNetRoles.First<IEP_portal.Models.AspNetRoles>().Name;
+            }
+        }
+        <dd>
+            @name
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+      
+    </dl>
+    <br />
+    <div align="center">
+        <button type="button" class="btn new-button" data-toggle="modal"
+                data-target="#OrderModal" style="margin-bottom:25px; margin-left:30px">
+            Order more tokens
+        </button>
+    </div>
+</div>
+
+@Html.Partial("~/Views/Orders/OrderModal.cshtml")
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '.orderBtn', function (e) {
+                var id = $(this).attr('id');
+                var location;
+                var amount;
+                var price;
+                if(id == "S"){
+                    amount = @ViewBag.Silver;
+                      }
+                else if(id == "G"){
+                    amount = @ViewBag.Gold;
+                   
+                }
+                else
+                    amount = @ViewBag.Platinum;
+           
+                $.ajax({
+                    type: 'POST',
+                    headers: {__RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()},
+                    url: '@Url.Action("NewOrder", "Orders")',
+                    data: {amount: amount,
+                        price: 50},
+                    success: function(response){
+                        location= 'http://stage.centili.com/payment/widget?apikey=b07688c6adc6bba4139a365038846259&price=50&userid='+response.id+'&theme=black';
+                        window.location=location;
+                    }
+            });
+               
+            });
+        });
+    </script>
+}
+

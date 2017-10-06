@@ -1,0 +1,93 @@
+﻿@model IEP_portal.Models.AspNetUsers
+   
+
+@{
+    ViewBag.Title = "Activate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-heading" align="center">Activate profile</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger", @align = "center" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-6", style="vercital-align:middle" })
+            <div class="col-md-6" style="padding-top: 7px">
+                @Html.DisplayFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+               
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6" style="padding-top: 7px">
+                @Html.DisplayFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+             
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tokens, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6" style="padding-top: 7px">
+                @Html.DisplayFor(model => model.Tokens, new { htmlAttributes = new { @class = "form-control" } })
+           
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.isActive, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.isActive)
+                    @Html.ValidationMessageFor(model => model.isActive, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6" style="padding-top: 7px">
+                @Html.DisplayFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-6" style="padding-top: 7px">
+                @Html.DisplayFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("user Role", new { @class = "col-md-6 control-label" })
+            <div class="col-md-6" style="padding-top: 7px">
+                @Html.DropDownList("Role", (SelectList)ViewBag.Name, " ")
+            </div>
+        </div>   
+        <br />
+        <div class="form-group">
+            <div class="col-md-6" align="right">
+                <input type="submit" value="Save" class="btn new-button" />
+            </div>
+            <div class="col-md-6" align="left">
+                <button onclick="location.href='/users'" type="button" class="btn new-button">
+                    Cancel
+                </button>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

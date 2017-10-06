@@ -1,0 +1,104 @@
+﻿@model IEP_portal.Models.Channel
+
+@{
+    ViewBag.Title = "Channel Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div  class="page-heading"  align="center">Channel Details</div>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUsers.Name):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUsers.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OpenedAt):
+        </dt>
+
+        <dd>
+            @if (Model.OpenedAt != null)
+            {
+                @Html.DisplayFor(model => model.OpenedAt)
+            }
+            else
+            {
+                @Html.Raw("Not opened");
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Password):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClosedAt):
+        </dt>
+
+        <dd>
+            @if (Model.ClosedAt != null)
+            {
+            @Html.DisplayFor(model => model.ClosedAt)
+            }
+            else
+            {
+                @Html.Raw("Not closed");
+            }
+                
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentsNum):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentsNum)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.timeLimit):
+        </dt>
+
+        <dd>
+            @if (Model.timeLimit == null)
+            {
+                @Html.Raw("Not auto-closing")
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.timeLimit)
+            }
+        </dd>
+    </dl>
+</div>
+<p align="center">
+    @if (Model.OpenedAt == null)
+    {
+        @Html.ActionLink("Open", "Open", new { id = Model.Id })@Html.Raw(" |")
+    }
+
+    else if (Model.ClosedAt == null && Model.timeLimit == null)
+    {
+    @Html.ActionLink("Close", "Close", new { id = Model.Id })@Html.Raw(" |")
+    }
+    @Html.ActionLink("Distributed Questions", "Questions", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index") 
+
+</p>

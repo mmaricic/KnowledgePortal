@@ -1,0 +1,90 @@
+﻿@model IEP_portal.Models.ActiveChannelsViewModel
+
+<div class="card col-md-3" id="@Model.channel.Id">
+    <p class="text-center card-text-title">@Model.channel.Title</p>
+    <h6 class="text-center">Author: @Model.channel.AspNetUsers.Name @Model.channel.AspNetUsers.Surname</h6>
+    @if (Model.isSubscribed)
+            {
+        <h6 class="text-center">Evaluation: <span style="color:@((bool)Model.evaluation ? "green" : "red")">@((bool)Model.evaluation ? "On" : "Off")</span></h6>
+    }
+    <div align="center" style="margin-top: 10px">
+        @if (Model.isSubscribed)
+        {
+            if (!(bool)Model.evaluation)
+            {
+                using (Html.BeginForm("EvaluationOn", "Channels", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", Model.channel.Id)
+                    <button class="btn new-button channel-button" id="ON-@Model.channel.Id"  type="submit">Turn on Auto-Evaluation</button>
+                }
+
+            }
+            else
+            {
+                using (Html.BeginForm("EvaluationOff", "Channels", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", Model.channel.Id)
+                    <button class="btn new-button channel-button" id="OFF-@Model.channel.Id">Turn off Auto-Evaluation</button>
+                }
+
+            }
+
+        }
+        else
+        {
+
+            <button class="btn new-button channel-button" style="margin-top:27px" data-toggle="modal"
+                    data-target="#subscribeModal-@Model.channel.Id">
+                Subscribe
+            </button>
+
+        }
+    </div>
+</div>
+<div class="modal fade" id="subscribeModal-@Model.channel.Id" role="dialog" data-backdrop="static">
+    <div class="modal-dialog ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3>Subscribe to channel</h3>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Subscribe", "Channels", FormMethod.Post, new { id = "subscribeForm" + Model.channel.Id }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", Model.channel.Id)
+                    <div class="form-group text-center" align="center">
+                        @Html.Label("Password", new { @class = "control-label" })
+                        <div align="center">
+                            @Html.TextBox("password", "", new { @class = "form-control", @placeholder = "Insert password", @id = "subscribeBtn " + Model.channel.Id })
+                            <p id="error-@Model.channel.Id" class="text-danger"></p>
+                        </div>
+                    </div>
+                    <br />
+                            <div class="form-group text-center" align="center">
+                                @Html.Label("Turn on auto-evaluation?", new { @class = "control-label" })
+                                <div align="center">
+                                    @Html.RadioButton("evaluation", true, false) Yes
+                                    &nbsp;&nbsp;&nbsp;
+                                    @Html.RadioButton("evaluation", false, true) No
+
+                                </div>
+                            </div>
+                }
+
+
+            </div>
+            <div class="modal-footer" align="center" style="margin-left: auto; margin-right: auto;">
+                <div align="center">
+                    <button channelid="@Model.channel.Id" type="button" class="btn btn-success subscribeBtn"> Confirm</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-danger " data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

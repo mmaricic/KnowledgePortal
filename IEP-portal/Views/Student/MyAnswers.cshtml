@@ -1,0 +1,62 @@
+﻿@model IEnumerable<IEP_portal.Models.Response>
+
+@{
+    ViewBag.Title = "MyAnswers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-heading" align="center">My Answers</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Distributed_Question.Title)
+        </th>
+         <th>
+            @Html.DisplayNameFor(model => model.Distributed_Answer.Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subscribed.Channelid)
+        </th>
+        <th>
+            Channel title
+        </th>
+        <th>
+           @Html.DisplayNameFor(model => model.Correct)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SentAt)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Distributed_Question.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Distributed_Answer.Text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subscribed.Channelid)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subscribed.Channel.Title)
+        </td>
+        <td>
+            @(
+                (item.Correct == null) ? "unkwown" : (((bool)item.Correct) ? "Correct" : "Incorrect")
+             )
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SentAt)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "MyAnswerDetails", new { sid=item.StudentId, qid=item.QuestionId }) 
+        </td>
+    </tr>
+}
+
+</table>
+<br />

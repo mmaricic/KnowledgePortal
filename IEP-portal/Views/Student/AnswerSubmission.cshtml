@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "AnswerSubmission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<div class="page-heading text-center" >Answer Submission Notification</div>
+<hr /><br />
+
+<h3 style="color:@Session["SubmitColor"].ToString()" class="text-center">
+    @{
+            var status = Session["SubmitMessage"].ToString();
+            String message = "";
+            switch(status){
+                case "correct": message = "Your answer is correct.Congratulations";
+                    break;
+                case "incorrect": message = "We're sorry, your answer is incorrect.";
+                    break;
+                case "evalOff": message = "Your answer is successfully saved! If you want to find out if your anwer is correct, please turn on auto evaluation.";
+                break;
+            }
+    }
+    @if (!message.Equals(""))
+    {
+        @message
+    }
+</h3>
+@if (message.Equals(""))
+{
+    <h3 style="color:@Session["SubmitColor"].ToString()" class="text-center">
+       Your answer is saved. You don't have enough tokens so we cannot give you evaluation of your answer. 
+        <br /> 
+        If you want to continue to receive evaluation you can get more tokens <a href='/Orders/Index'>here</a>, or you can turn off auto-evaluation <a href='/Channels/ActiveChannels'>here</a>.
+    </h3>
+}
+        <br />
+        <div align="center">
+            <button onclick="location.href='/Student/UnansweredQuestions'" type="button" class="btn new-button">
+                  Back to Questions
+            </button>
+        </div>
+        <br />
+        

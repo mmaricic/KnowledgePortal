@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNet.Identity;
+
+<div class="modal fade" id="OrderModal" role="dialog" data-backdrop="static">
+    @Html.AntiForgeryToken()
+    
+    <div class="modal-dialog ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3>Order tokens</h3>
+            </div>
+            <div class="modal-body" align="center">
+                <button type="button" class="btn btn-silver orderBtn" id="S">
+                    <span align="center">Silver package - <b>@ViewBag.Silver</b> tokens<span class="glyphicon glyphicon-chevron-right" style="margin-left:20px"></span></span>
+                </button>
+                <br/>
+                <button id="G" type="button" class="btn btn-gold  orderBtn">
+                    <span>Gold package - <b>@ViewBag.Gold</b> tokens</span><span class="glyphicon glyphicon-chevron-right"  style="margin-left:20px"></span>
+                </button>
+                <br />
+                <button id="P" type="button" class="btn btn-platinum orderBtn">
+                    <span>Platinum package - <b>@ViewBag.Platinum</b> tokens</span><div class="glyphicon glyphicon-chevron-right"  style="margin-left:20px"></div>
+                </button>
+            </div>
+            <div class="modal-footer" align="center" style="margin-left: auto; margin-right: auto;">
+                <div align="center">
+                    <button class="btn btn-danger new-button " data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

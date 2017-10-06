@@ -1,0 +1,58 @@
+﻿@model IEP_portal.Models.Distributed_Question
+
+<link href="~/Content/Custom.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Answering Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
+}
+
+<div class="container" style="width:55%">
+        <div class="heading text-center" style="margin-top:30px;"> @Html.DisplayFor(x => x.Title)</div>
+    <br />
+        @if(Model.Text != null)
+        {
+            <div class="description text-center">@Html.DisplayFor(x => x.Text)</div>
+        }
+
+       @if (Model.Picture != null)
+       {
+           <br />
+        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Picture)" />
+       }
+    <br /> <br />
+    @using (Html.BeginForm("SubmitAnswer", "Student", FormMethod.Post, new { id = "answeringForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("id", Model.Id)
+        @Html.Hidden("channel", Model.ChannelId)
+
+    foreach (var child in Model.Distributed_Answer)
+    {
+        <div class="row" id="answer @child.Id">
+            <div class="col-md-1" align="right" style="padding-top:2px">
+                @Html.RadioButton("chosen", child.Id, i++==0, new { @style = "margin-left:5%" })
+            </div>
+            <div class="col-md-11 description">
+                @Html.DisplayFor(item => child.Mark): &nbsp;
+                @Html.DisplayFor(item => child.Text)
+            </div>
+            
+        </div>
+       
+        }
+        <br />
+        <br />
+        <div class="form-group">
+            <div class="col-md-6" align="right">
+                <input type="submit" value="Save" class="btn new-button" />
+            </div>
+            <div class="com-md-6" align="left">
+                <button onclick="location.href='/Student/UnansweredQuestions'" type="button" class="btn new-button">
+                    Cancel
+                </button>
+            </div>
+            </div>
+            }
+        </div>

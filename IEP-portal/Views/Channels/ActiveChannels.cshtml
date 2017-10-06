@@ -1,0 +1,94 @@
+﻿@model IEnumerable<IEP_portal.Models.ActiveChannelsViewModel>
+
+@{
+    ViewBag.Title = "Active Channels";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
+}
+<link href="~/Content/Custom.css" rel="stylesheet" type="text/css" />
+
+<div class="page-heading">Active Channels</div>
+<hr />
+@if (Session["closedChannel"] != null)
+{
+    <h3 class="text-center text-danger">
+      
+        @Session["closedChannel"].ToString()
+    </h3>
+    <br/>
+}
+   <div class="row" id="allChannels">
+@foreach (var item in Model)
+            {
+        @Html.Partial("ChannelDisplay", item)
+    }
+</div>
+
+@section Scripts {
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+<script src="~/signalr/hubs"></script>
+
+    <script>
+        $(function () {
+          
+                var channel = $.connection.channelHub;
+
+                $.connection.hub.start({ transport: 'longPolling' });
+
+                channel.client.addChannel = function (channel) {
+                    var all = JSON.parse(channel);
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("AddChannel", "Channels")',
+                            data: { channel: all }
+                            ,
+                            success: function (data) { $('#allChannels').append(data); },
+                        });
+                   
+                }
+            
+            channel.client.removeChannel = function (id) {
+                $("#"+id).remove();
+            }
+  
+
+            $(document).on('click', '.subscribeBtn', function (e) {
+
+
+                $.ajaxSetup({
+                    headers: {
+                        '__RequestVerificationToken': $("input[name='__RequestVerificationToken']").val()
+                    }
+                });
+
+                var id = $(this).attr("channelid");
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Channels/Subscribe',
+                    data: $('#subscribeForm' + id).serialize(),
+                    success: function (response) {
+                        if(response.state == "valid"){
+                            $('#subscribeModal-' + id).modal('hide');
+                            window.location = response.url;
+                        }
+                        else  if(response.state == "invalid")
+                            $('#error-' + id).html(response.error);
+                        else {
+                            $('#subscribeModal-' + id).modal('hide');
+                            window.location = response.url;
+                        }
+                    },
+                    error: function (response) {
+                        alert(response);
+                      
+                    }
+                });
+
+               
+            });
+        });
+    </script>
+    
+    }

@@ -1,0 +1,101 @@
+﻿@model IEP_portal.Models.Parameters
+
+@{
+    ViewBag.Title = "Paramaters";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div align="center">
+    <div class="page-heading" >Parameters</div>
+</div>
+<hr/>
+<div>
+   
+    <br />
+   
+    <table class="table text-center" style="max-width: 500px" align="center">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.K)
+               </th>
+
+                <td>
+                    @Html.DisplayFor(model => model.K)
+                    @if (Model.K == null)
+                    {
+                        <p>Undefined</p>
+                    }
+                </td>
+
+           </tr>     
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.M)
+            </th>
+
+            <td>
+                @Html.DisplayFor(model => model.M)
+                @if (Model.M == null)
+                {
+                    <p>Undefined</p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.E)
+            </th>
+
+            <td>
+                @Html.DisplayFor(model => model.E)
+                @if (Model.E == null)
+                {
+                    <p>Undefined</p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.S)
+            </th>
+
+            <td>
+                @Html.DisplayFor(model => model.S)
+                @if (Model.S == null)
+                {
+                    <p>Undefined</p>
+                }
+            </td>
+        </tr> 
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.G)
+            </th>
+
+            <td>
+                @Html.DisplayFor(model => model.G)
+                @if (Model.G == null)
+                {
+                    <p>Undefined</p>
+                }
+            </td>
+        </tr> 
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.P)
+            </th>
+
+            <td>
+                @Html.DisplayFor(model => model.P)
+                @if (Model.P == null)
+                {
+                    <p>Undefined</p>
+                }
+            </td>
+        </tr>
+      </table>
+</div>
+<div align="center">
+    <button onclick="location.href='/parameters/edit/@Model.Id'" type="button" class="btn new-button">
+        Edit
+    </button>
+</div>

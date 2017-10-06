@@ -1,0 +1,101 @@
+﻿@model IEnumerable<IEP_portal.Models.Question>
+
+@{
+    ViewBag.Title = "Distribute questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div  class="page-heading"  align="center">Distribute Questions</div>
+
+@using (Html.BeginForm("Distribute", "Channels", FormMethod.Post, new { @id = "DistributeForm"}))
+{
+
+@Html.AntiForgeryToken()
+
+    <input type="hidden" value=@ViewBag.channelId name="id" />
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Picture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
+        </th>
+       
+        <th>
+            @Html.Label("Chosen")
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.Label(item.Picture == null ? "doesn't exist" : "exists")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+        
+        <td>
+            <input type="checkbox" name="selected" value="@item.Id">
+            
+        </td>
+    </tr>
+}
+
+
+</table>
+
+<div class="form-group">
+    <div class="col-md-6" align="right">
+        <input type="button" value="Save" class="btn new-button" id="distributeBtn" />
+    </div>
+    <div class="com-md-6" align="left">
+        <button onclick="location.href='/channels'" type="button" class="btn new-button">
+            Cancel
+        </button>
+    </div>
+</div>
+}
+
+@section Scripts{
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    
+    <script>
+        $(function () {
+
+            var questions = $.connection.QuestionHub;
+
+            $.connection.hub.start({ transport: 'longPolling' }).done(function () {
+                $(document).on('click', '#distributeBtn', function (e) {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: $('#DistributeForm').attr('action'),
+                        data: $('#DistributeForm').serialize(),
+                        success: function (response) {
+                           
+                            window.location = response.url;
+                        },
+                        error: function (response) {
+                            alert(response);
+                        }
+                    });
+
+
+            });
+        
+            });
+        });
+    </script>
+    
+    }

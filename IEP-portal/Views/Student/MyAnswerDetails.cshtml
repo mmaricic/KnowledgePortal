@@ -1,0 +1,132 @@
+﻿@model IEP_portal.Models.Response
+
+@{
+    ViewBag.Title = "MyAnswerDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="page-heading" align="center">Answer Details</div>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Teacher:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Distributed_Question.Question.AspNetUsers.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Distributed_Question.Title):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Distributed_Question.Title)
+        </dd>
+        @if (Model.Distributed_Question.Text != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Distributed_Question.Text):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Distributed_Question.Text)
+            </dd>
+        }
+        @if (Model.Distributed_Question.Picture != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Distributed_Question.Picture):
+            </dt>
+
+            <dd>
+                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Distributed_Question.Picture)" />
+            </dd>
+        }
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SentAt):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SentAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Channelid):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Channelid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subscribed.Channel.Title):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subscribed.Channel.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayFor(model => model.Correct)
+        </dt>
+
+        <dd>
+            @(
+                (Model.Correct == null) ? "unkwown" : ((bool)Model.Correct) ? "Correct" : "Incorrect"
+            )
+        </dd>
+    </dl>
+</div>
+
+<div>
+
+    <dl class="dl-horizontal">
+      <dt>
+            Answers:
+       </dt>
+
+
+        <dd>
+            @foreach (var child in Model.Distributed_Question.Distributed_Answer)
+            {
+                string color;
+                if (Model.Correct == null)
+                {
+                    color = "black";
+                }
+                else if ((Model.AnswerId == child.Id && (bool)Model.Correct) || (child.IsCorrect))
+                {
+                    color = "green";
+                }
+                else if (Model.AnswerId == child.Id && !(bool)Model.Correct)
+                {
+                    color = "red";
+                }
+                else
+                {
+                    color = "black";
+                }
+
+                <div class="row">
+                    <div class="col-md-1" align="right">
+                        @Html.DisplayFor(item => child.Mark):
+                    </div>
+                    <div class="col-md-11" align="left" style="font-weight:@(Model.AnswerId == child.Id?"bold":""); color: @color">
+                        @Html.DisplayFor(item => child.Text)
+                    </div>
+                </div>
+            }
+        </dd>
+        </dl>
+    </div>
+        <br />
+        <div align="center">
+            <button onclick="location.href='/student/myAnswers'" type="button" class="btn new-button">
+                Back to list
+            </button>
+        </div>

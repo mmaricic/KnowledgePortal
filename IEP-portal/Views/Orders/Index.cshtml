@@ -1,0 +1,103 @@
+﻿@model IEnumerable<IEP_portal.Models.Order>
+@using Microsoft.AspNet.Identity;
+@using System.Globalization;
+
+@{
+    ViewBag.Title = "My Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+    customCulture.NumberFormat.NumberDecimalSeparator = ".";
+
+    System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+
+}
+
+<link href="~/Content/Custom.css" rel="stylesheet" type="text/css" />
+
+
+<div class="page-heading" align="center">Token Orders</div>
+
+<br />
+<div align="center">
+    <button type="button" class="btn new-button" align="center" data-toggle="modal"
+            data-target="#OrderModal" style="margin-bottom:25px">
+        Order more tokens
+    </button>
+</div>
+<br/>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Tokens)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.creationTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.Tokens)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.creationTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+    </tr>
+}
+
+</table>
+<br />
+
+@Html.Partial("OrderModal")
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '.orderBtn', function (e) {
+                var id = $(this).attr('id');
+                var location;
+                var amount;
+                var price;
+                if(id == "S"){
+                    amount = @ViewBag.Silver;
+                      }
+                else if(id == "G"){
+                    amount = @ViewBag.Gold;
+
+                }
+                else
+                    amount = @ViewBag.Platinum;
+
+                $.ajax({
+                    type: 'POST',
+                    headers: {__RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()},
+                    url: '@Url.Action("NewOrder", "Orders")',
+                    data: {amount: amount,
+                        price: 50},
+                    success: function(response){
+                        location= 'http://stage.centili.com/payment/widget?apikey=b07688c6adc6bba4139a365038846259&price=50&userid='+response.id+'&theme=black';
+                        window.location=location;
+                    }
+            });
+
+            });
+        });
+    </script>
+    }

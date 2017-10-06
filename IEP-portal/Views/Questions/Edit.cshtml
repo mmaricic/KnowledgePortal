@@ -1,0 +1,89 @@
+﻿@model IEP_portal.Models.Question
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-heading" align="center">Edit question</div>
+
+
+@using (Html.BeginForm("Edit", "Questions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger", @align = "center" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.AuthorId)
+        @Html.HiddenFor(model => model.CreatedAt)
+        @Html.HiddenFor(model => model.LockedAt)
+        @Html.HiddenFor(model => model.Picture)
+       
+
+        <div class="form-group" style="margin-left:45px">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-left:45px">
+            @Html.LabelFor(model => model.NewImage, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.NewImage, new { type = "file", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.NewImage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-left:45px">
+            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group" style="margin-left:45px">
+            @Html.LabelFor(model => model.IsLocked, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                <div class="checkbox">
+                    @Html.CheckBoxFor(model => model.IsLocked)
+                    @Html.ValidationMessageFor(model => model.IsLocked, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="col-md-6" align="center">
+            @Html.Label("Answers", new { @style = "margin-left:31% " })
+        </div>
+        <div class="col-md-6" align="left">
+            @Html.Label("Correct Answer", new { @style = "margin-left:18%" })
+        </div>
+        <br />
+        <hr />
+        @Html.EditorFor(model => model.Answer)
+     
+        <br />
+        <div class="form-group">
+            <div class="col-md-6" align="right" style="margin-right:20px">
+                <input type="submit" value="Save" class="btn new-button" />
+            </div>
+            <div class="com-md-6" align="left">
+                <button onclick="location.href='/questions'" type="button" class="btn new-button">
+                   Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<IEP_portal.Models.Distributed_Question>
+
+@{
+    ViewBag.Title = "Unanswered Questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
+}
+<link href="~/Content/Custom.css" rel="stylesheet" type="text/css" />
+
+<div class="page-heading" align="center">Unanswered Questions</div>
+
+<hr/>
+@if (ViewBag.Channels == 0)
+{
+<h2>You are not subscribed to any channel</h2>
+}
+<div class="container">
+    <div class="row" id="mainBoard">
+        @foreach (var item in Model)
+        {
+            @Html.Partial("NewQuestion", item)
+
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script>
+        $(function () {
+            var question = $.connection.QuestionHub;
+
+            $.connection.hub.start({ transport: 'longPolling' });
+
+            question.client.newQuestions = function (questions) {
+                var all = JSON.parse(questions);
+
+                for (var i = 0; i < all.length; i++) {
+                  
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("NewQuestion", "Student")',
+                        data: {question : all[i]}
+                        ,
+                        success: function (data) { $('#mainBoard').append(data); }, 
+                    });
+                }
+            }
+        });
+    </script>
+}

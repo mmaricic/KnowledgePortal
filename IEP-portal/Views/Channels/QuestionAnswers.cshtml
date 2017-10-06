@@ -1,0 +1,133 @@
+﻿@model IEP_portal.Models.DisplayAnswersViewModel
+
+@{
+    ViewBag.Title = "Students Answers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div  class="page-heading" align="center">Students Answers for specific Question</div>
+
+<div>
+    <h4 align="center" style="font-weight: bold">Distributed Question</h4>
+    <hr />
+    <dl class="dl-horizontal">
+      
+        <dt>
+            @Html.DisplayNameFor(model => model.question.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.question.Title)
+        </dd>
+        @if (Model.question.Picture != null)
+        {
+        <dt>
+            @Html.DisplayNameFor(model => model.question.Picture)
+        </dt>
+
+        <dd>
+            
+        </dd>
+        <div align="center">
+            <img src="data:image;base64,@System.Convert.ToBase64String(Model.question.Picture)" />
+        </div>
+        }
+        }
+        @if (Model.question.Text != null)
+        {
+        <dt>
+            @Html.DisplayNameFor(model => model.question.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.question.Text)
+        </dd>
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.question.CreatedAt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.question.CreatedAt)
+        </dd>
+    </dl>
+</div>
+
+    <div class="col-md-4" align="center" style="color:#862d2d">
+        @Html.Label("Mark", new { @style = "margin-right:11%" })
+    </div>
+    <div class="col-md-4" align="center" style="font-weight: bold; color:#862d2d; font-family:SansSerif">
+        Answers
+    </div>
+    <div class="col-md-4" align="right" style="color:#862d2d">
+        @Html.Label("Correct Answer", new { @style = "margin-right:18%" })
+    </div>
+    <br />
+    <hr />
+    @foreach (var child in Model.question.Distributed_Answer)
+    {
+        <div class="row">
+            <div class="col-md-2" align="right">
+                @Html.DisplayFor(item => child.Mark)
+            </div>
+            <div class="col-md-8" align="center">
+                @Html.DisplayFor(item => child.Text)
+            </div>
+            <div class="col-md-2" align="left" style="vertical-align:middle;">
+                @if (child.IsCorrect) {
+                @Html.Label("Yes", new { @style = "margin-left:20px" });
+                }
+                else {
+                @Html.Label("No", new { @style = "margin-left:20px" });
+                }
+            </div>
+        </div>
+    }
+    <br />
+    <hr />
+    <h4 align="center" style="font-weight:bold">Given answers</h4>
+    <table class="table text-center">
+        <tr>
+            <th class="text-center">
+
+                @Html.Label("Student", new { @style = "margin-right:11%" })
+            </th>
+            <th class="text-center">
+                <div style="margin-right:29%">
+                    Sent at
+                </div>
+            </th>
+            <th class="text-center">
+                @Html.Label("Answer")
+            </th>
+        </tr>
+        @foreach (var ans in Model.answers)
+        {
+            <tr>
+                <td >
+                    <div style="margin-right:10%">
+                        @Html.DisplayFor(modelItem => ans.Subscribed.AspNetUsers.Name)
+                        @Html.DisplayFor(modelIem => ans.Subscribed.AspNetUsers.Surname)
+                    </div>
+                </td>
+                <td>
+                    <div style="margin-right:26%">
+                        @Html.DisplayFor(modelItem => ans.SentAt)
+                        </div>
+                </td>
+
+                <td>
+                    <font color="@(ans.Distributed_Answer.IsCorrect?"green":"red")">
+                        @Html.DisplayFor(modelItem => ans.Distributed_Answer.Mark)
+                    </font>
+                </td>
+
+            </tr>
+        }
+    </table>
+
+<div align="center">
+    <button onclick="location.href='/channels'" type="button" class="btn new-button">
+        Back to list
+    </button>
+</div>

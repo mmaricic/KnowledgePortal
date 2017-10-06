@@ -1,0 +1,60 @@
+﻿@using IEP_portal.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+<div align="center"><h2>@ViewBag.Title.</h2></div>
+<div class="row" style="margin-left:auto; margin-right:auto">
+    <div style="margin-left:auto; margin-right:auto">
+        <section id="loginForm" align="center">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4 align="center">Use a local account to log in.</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", @align="center" })
+                <div class="form-group" style="margin-left:50px">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label"})
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger"})
+                    </div>
+                </div>
+                <div class="form-group"  style="margin-left:50px">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label"})
+                    <div class="col-md-8">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control"})
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger"})
+                    </div>
+                </div>
+                <div class="form-group"  style="margin-left:50px">
+                    <div class="col-md-5" align="right">
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        </div>
+                        <div class="col-md-7" align="left">
+                          
+                            @Html.LabelFor(m => m.RememberMe)
+                       
+                    </div>
+                </div>
+                <div class="form-group" align="center">
+                    <div class="col-md-12">
+                        <input type="submit" value="Log in" class="btn new-button" />
+                    </div>
+                </div>
+                <div align="center">
+                    @Html.ActionLink("Register as a new user", "Register")
+                    </div>
+                    @* Enable this once you have account confirmation enabled for password reset functionality
+                <p>
+                    @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                </p>*@
+            }
+</section>
+    </div>
+   
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

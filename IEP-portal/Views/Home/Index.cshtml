@@ -1,0 +1,36 @@
+﻿@model IEP_portal.Models.AspNetUsers
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@if (Request.IsAuthenticated)
+{
+<div class="text-center homepage-message" >
+    Welcome @Model.Name @Model.Surname
+</div>
+}
+else
+{
+<div class="row text-center" align="center">
+    <br />
+    <br />
+    <h2>
+        Welcome to our interactive knowledge portal! 
+        </h2>
+        <br />
+    <hr/>
+    <h3>
+        As a student, here you can answer to questions in real-time, subscribe to channels and many more!
+        <br />
+        <br />
+        If you are a teacher, you can make question channels, make new questions and send them through channels to students so that they can answer!
+        <br />
+        <br />
+        If you already have an account, please proceed to <b><a href="/account/Login">login</a></b> page. If you are new here, please go to <b><a href="/account/Register">registration page</a></b> and join our community!
+        <br />
+        <br />
+
+    </h3>
+</div>
+}
