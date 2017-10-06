@@ -1,3 +1,4 @@
+IEP-portal\Scripts\* linguist-vendored
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
@@ -63,4 +64,3 @@
 #*.RTF   diff=astextplain
 
 
-\IEP-portal\Scripts\* linguist-vendored
