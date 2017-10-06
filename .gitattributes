@@ -63,4 +63,4 @@
 #*.RTF   diff=astextplain
 
 
-IEP-portal\Scripts\* linguist-vendored
+\IEP-portal\Scripts\* linguist-vendored
