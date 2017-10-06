@@ -62,4 +62,5 @@
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
 
-*.rb linguist-language=C#
+special-vendored-path/* linguist-vendored
+IEP-portal\Scripts linguist-vendored=false
